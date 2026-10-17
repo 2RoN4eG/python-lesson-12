@@ -82,7 +82,6 @@ class Dragon(Warrior):
     def __init__(self, health=100, attack=10, fire_damage=4):
         super().__init__(health, attack)
         self.fire_damage = fire_damage
-        print(f"{self}")
 
     def __str__(self):
         return super().__str__() + f", Fire damage: {self.fire_damage}"
