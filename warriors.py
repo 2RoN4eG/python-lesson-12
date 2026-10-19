@@ -55,9 +55,9 @@ class Elf(Warrior):
         if self.defend_counter % (self.agility + 1) != 0:
             # print(f"{self.__class__.__name__} получает урон")
             self.health -= damage
-        else:
-            # print(f"{self.__class__.__name__} уклоняется")
-            pass
+        # else:
+        #     print(f"{self.__class__.__name__} уклоняется")
+        #     pass
 
 
 class Orc(Warrior):
@@ -173,100 +173,3 @@ class Army(object):
                 return warrior
         else:
             return None
-
-
-class Battle:
-    @staticmethod
-    def damage_extra_if_warrior_is_dragon(warrior, army):
-        if isinstance(warrior, Dragon):
-            second_warrior = army.get_second_alive_warrior()
-            if second_warrior:
-                second_warrior.defend(warrior.fire_damage)
-
-    @staticmethod
-    def fight(army1, army2):
-        army1_attacks = True
-
-        while army1.has_alive_warriors and army2.has_alive_warriors:
-            w1 = army1.get_first_alive_warrior()
-            w2 = army2.get_first_alive_warrior()
-
-            while w1.is_alive and w2.is_alive:
-                if army1_attacks:
-                    w1.attacking(w2)
-                    Battle.damage_extra_if_warrior_is_dragon(w1, army2)
-                    if w2.is_alive:
-                        w2.attacking(w1)
-                        Battle.damage_extra_if_warrior_is_dragon(w2, army1)
-                else:
-                    w2.attacking(w1)
-                    Battle.damage_extra_if_warrior_is_dragon(w2, army1)
-                    if w1.is_alive:
-                        w1.attacking(w2)
-                        Battle.damage_extra_if_warrior_is_dragon(w1, army2)
-
-            if not w1.is_alive:
-                army1_attacks = True
-            else:
-                army1_attacks = False
-
-        return army1.has_alive_warriors
-
-
-def fight(lhs, rhs):
-    while lhs.is_alive and rhs.is_alive:
-        lhs.attacking(rhs)
-        if rhs.is_alive:
-            rhs.attacking(lhs)
-
-    return lhs.is_alive
-
-
-warrior1 = Warrior()
-warrior2 = Warrior()
-
-result = fight(warrior1, warrior2)
-print(result)
-
-# warrior3 = Warrior()
-# print(f"{warrior3}")
-# warrior3 *= 2
-# print(f"{warrior3}")
-
-boris = Elf()
-emelya = Orc()
-print(fight(boris, emelya))
-
-boris = Hobbit()
-emelya = Dragon()
-print(fight(boris, emelya))
-
-boris = Dragon()
-emelya = Dragon()
-print("Dragon vs Dragon", fight(boris, emelya))
-
-army1 = Army()
-army1.add_member(Warrior, 1)
-army1.add_member(Elf, 2)
-army1.add_member(Dragon, 1)
-army1.add_member(Warrior, 5)
-print(f"Army 1 has length {len(army1)}")
-army1.debug()
-
-# print()
-# army1 += 5
-# army1.debug()
-
-# print()
-# army1 *= 5
-# army1.debug()
-
-army2 = Army()
-army2.add_member(Warrior, 1)
-army2.add_member(Dragon, 2)
-army2.add_member(Warrior, 1)
-print(f"Army 2 has length {len(army2)}")
-# army2.debug()
-
-battle_result = Battle.fight(army1, army2)
-print("Победила армия 1" if battle_result else "Победила армия 2")
